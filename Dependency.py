@@ -1,4 +1,4 @@
-def add_dependency_to_vec(words_vec,sentences_data):
+def add_dependency_to_vec(words_vec,sentences_data,idx_2_w):
   
   """
   参数说明
@@ -15,6 +15,7 @@ def add_dependency_to_vec(words_vec,sentences_data):
                     ....
                   ]
                  每句话由一个list表示，其中每一个数字表示词的编号
+   idx_2_w:编号转词的词典，如词w编号5，可以根据idx_2_w[5]得到词w
                  
   返回参数说明：
   
