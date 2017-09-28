@@ -4,7 +4,6 @@ import pickle as pkl
 import jpype
 """
 Created on Tue Sep 26 15:39:40 2017
-
 """
 def add_dependency_to_vec(words_vec,sentences_data,idx_2_w):
     '''
@@ -41,10 +40,12 @@ def add_dependency_to_vec(words_vec,sentences_data,idx_2_w):
     print ('词向量匹配中...')
     print ('提取依存序列')
     docIndex = [] #总
+    allWord=[]
     for count in range(len(sentences_data)) :
         if count % 1000 ==0:
             print (count)
         sentIndex = [] #句存储list 包含每个词及他们的孩子编号序列
+        sentWord = []        
         l = ' '.join([idx_2_w[int(x)] for x in sentences_data[count]])
         if l.strip('\n') != '' :
             linewrite0 = HanLP.parseDependency(l)
@@ -107,8 +108,10 @@ def add_dependency_to_vec(words_vec,sentences_data,idx_2_w):
     #            if flag == 0 : #如果该词无孩子 则孩子序列则为0
     #                wordIndex.append(0)
                 sentIndex.append(wordIndex) #注意！！依存句法结构提取出来第一词编号为1，而此处第一词编号 为 0 但index同 且提取出的孩子序号同原来编号      
+                sentWord.append(ll.split('\t')[1])
         docIndex.append(sentIndex)
-    return docIndex
+        allWord.append(sentWord)
+    return docIndex,allWord
 
   
 
@@ -129,12 +132,15 @@ if __name__ == "__main__":
  
     
     print ("load data done")
-    docIndex=add_dependency_to_vec(words_vec,sentences_data,idx_2_w)
+    docIndex,allWord=add_dependency_to_vec(words_vec,sentences_data,idx_2_w)
     
     with open('word2vec_file/added_dependency_vec.pkl','wb') as output:
         pkl.dump(docIndex, output)
+    with open('word2vec_file/added_dependency_word.pkl','wb') as output:
+        pkl.dump(allWord, output)
     
     print (len(docIndex))
+    print (len(allWord))
    
 
 
